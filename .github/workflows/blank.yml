@@ -16,3 +16,11 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
         ls .
+        date >> README.md
+        git add README.md
+        git commit -m'github action adds date';
+        remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+        git remote rm origin || true
+        git remote add origin "${remote_repo}"
+        git push origin master
+        
