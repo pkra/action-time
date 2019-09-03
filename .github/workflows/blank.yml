@@ -22,10 +22,10 @@ jobs:
         remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
         git remote rm origin || true
         git remote add origin "${remote_repo}"
-
         git clone https://github.com/mathblogging/mathblogging-base.git
         cd mathblogging-base
         mkdir mathblogging.org
+        mkdir feeds
         npm i
         node ./tools/csv_to_json.js
         sh ./tools/wgetter.sh 
