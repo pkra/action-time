@@ -17,13 +17,22 @@ jobs:
         echo test, and deploy your project.
         ls .
         git checkout master
-        date >> README.md
         git config user.name "${GITHUB_ACTOR}"
         git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
         remote_repo="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
-        echo $remote_repo
         git remote rm origin || true
         git remote add origin "${remote_repo}"
-        git add README.md
-        git commit -m'github action adds date';
+
+        git clone https://github.com/mathblogging/mathblogging-base.git
+        cd mathblogging-base
+        mkdir mathblogging.org
+        npm i
+        node ./tools/csv_to_json.js
+        sh ./tools/wgetter.sh 
+        node ./lib/generateEntries.js
+        node ./lib/app.js
+        mv mathblogging.org ../docs
+        cd ..
+        git add docs
+        git commit -m'generated site'
         git push origin master
